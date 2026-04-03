@@ -1,34 +1,63 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import "mars3d-cesium/Build/Cesium/Widgets/widgets.css"
-import "mars3d/mars3d.css"
+import * as Cesium from "cesium"
 
-import * as mars3d from "mars3d"
-import "mars3d-space"
+const cesiumContainer = ref(null);
+let viewer = null;
 
-const map = ref(null)
+onMounted(async () => {
+  Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMTRmNzJlMS1iYmY4LTQ0ZGItYjcwZS00NDk3OWU0MzFlNTgiLCJpZCI6MzE2MTcxLCJpYXQiOjE3NTEwMDI3Nzl9.-_pA6MMWnyPOMStsyb0ktnvAjsS5TVdlpL0tTLFxgNo"
+  
+  viewer = new Cesium.Viewer(cesiumContainer.value, {
+    terrain: Cesium.Terrain.fromWorldTerrain({
+      requestWaterMask: true,
+      requestVertexNormals: true
+    })
+  })
+  
+  viewer.scene.skyAtmosphere.show = true;
+  viewer.scene.globe.showGroundAtmosphere = true;
 
-onMounted(() => {
-  map.value = new mars3d.Map("mars3dContainer", {
-    basemaps: [
-      {
-        name: "OSM",
-        type: "xyz",
-        url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        show: true
-      }
-    ]
+  // 隐藏 logo
+  viewer.cesiumWidget.creditContainer.style.display = "none";
+
+  // 查看帧率
+  viewer.scene.debugShowFramesPerSecond = true;
+
+  const position = Cesium.Cartesian3.fromDegrees(116.3912757, 39.906217, 0);
+
+  // 修复1: 使用 Cesium.Color.RED 或导入 Color
+  const icon = viewer.entities.add({
+    position: position,
+    billboard: {
+      image: "./icon/Location.png",
+      verticalOrigin: 0,
+      scale: 1.5,
+      color: Cesium.Color.RED  // 修改这里
+    },
+    label: {
+      text: "北京",
+      font: "14pt monospace",
+      style: 0,
+      outlineWidth: 2,
+      verticalOrigin: 1,
+      pixelOffset: new Cesium.Cartesian2(0, -9)
+    }
+  })
+
+
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(116.3912757, 39.906217, 50000),
+    orientation: {
+      heading: Cesium.Math.toRadians(30.0),
+      pitch: Cesium.Math.toRadians(-25.0),
+      roll: 0,
+    },
+    duration: 3.0
   })
 })
 </script>
 
 <template>
-  <div id="mars3dContainer" class="mars3d-container"></div>
+  <div ref="cesiumContainer" style="width: 100vw; height: 100vh;"></div>
 </template>
-
-<style>
-.mars3d-container {
-  width: 100%;
-  height: 100%;
-}
-</style>

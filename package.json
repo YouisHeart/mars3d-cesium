@@ -11,10 +11,12 @@
   "dependencies": {
     "@turf/turf": "^7.3.4",
     "cesium": "^1.140.0",
+    "lil-gui": "^0.21.0",
     "mars3d": "^3.11.1",
     "mars3d-cesium": "^1.139.1",
     "mars3d-space": "^3.11.1",
     "vite-plugin-cesium": "^1.2.23",
+    "vite-plugin-glsl": "^1.5.6",
     "vite-plugin-mars3d": "^4.2.2",
     "vue": "^3.5.30"
   },
