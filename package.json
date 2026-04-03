@@ -1,0 +1,25 @@
+{
+  "name": "mars3d-cesium",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@turf/turf": "^7.3.4",
+    "cesium": "^1.140.0",
+    "mars3d": "^3.11.1",
+    "mars3d-cesium": "^1.139.1",
+    "mars3d-space": "^3.11.1",
+    "vite-plugin-cesium": "^1.2.23",
+    "vite-plugin-mars3d": "^4.2.2",
+    "vue": "^3.5.30"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "vite": "^8.0.1"
+  }
+}
