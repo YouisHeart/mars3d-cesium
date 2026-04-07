@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import * as Cesium from "cesium"
-import cloud from "@/shaders/cloud.glsl"
 
 const cesiumContainer = ref(null);
 let viewer = null;
@@ -25,14 +24,26 @@ onMounted(async () => {
   // 查看帧率
   viewer.scene.debugShowFramesPerSecond = true;
 
-  const stage = new Cesium.PostProcessStage({
-    fragmentShader: cloud,
-    uniforms: {
-      iTime: () => performance.now() / 1000,
-      noiseTex:"./texture/Wpq1UDJ.png"
+  const position = Cesium.Cartesian3.fromDegrees(116.3912757, 39.906217, 0);
+
+  // 修复1: 使用 Cesium.Color.RED 或导入 Color
+  const icon = viewer.entities.add({
+    position: position,
+    billboard: {
+      image: "./icon/Location.png",
+      verticalOrigin: 0,
+      scale: 1.5,
+      color: Cesium.Color.RED  // 修改这里
+    },
+    label: {
+      text: "北京",
+      font: "14pt monospace",
+      style: 0,
+      outlineWidth: 2,
+      verticalOrigin: 1,
+      pixelOffset: new Cesium.Cartesian2(0, -9)
     }
-  });
-  viewer.scene.postProcessStages.add(stage);
+  })
 
 
   viewer.camera.flyTo({
